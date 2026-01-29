@@ -1,0 +1,54 @@
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const question = document.getElementById("question");
+  const message = document.getElementById("message");
+  const buttons = document.getElementById("buttons");
+
+  let firstYes = true;
+
+  function moveNoButton() {
+    const container = buttons.getBoundingClientRect();
+    const btn = noBtn.getBoundingClientRect();
+
+    const maxX = container.width - btn.width;
+    const maxY = container.height - btn.height;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+    noBtn.style.transform = `scale(${0.85 + Math.random() * 0.4})`;
+  }
+
+  // Dodge on hover
+  noBtn.addEventListener("mouseenter", moveNoButton);
+  noBtn.addEventListener("mousemove", moveNoButton);
+
+  // Dodge when cursor gets close
+  document.addEventListener("mousemove", (e) => {
+    const btnRect = noBtn.getBoundingClientRect();
+    const distance = Math.hypot(
+      e.clientX - (btnRect.left + btnRect.width / 2),
+      e.clientY - (btnRect.top + btnRect.height / 2)
+    );
+
+    if (distance < 140) {
+      moveNoButton();
+    }
+  });
+
+  yesBtn.addEventListener("click", () => {
+    if (firstYes) {
+      question.textContent = "Are you sure?";
+      message.textContent =
+        "By agreeing, you are designating the night to be with Drew Collins.";
+      firstYes = false;
+    } else {
+      question.textContent = "Perfect.";
+      buttons.style.display = "none";
+      message.textContent = "Make sure not to plan anything 😌";
+    }
+  });
+</script>
